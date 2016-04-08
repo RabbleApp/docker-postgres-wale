@@ -1,6 +1,6 @@
-FROM postgres:9.4-rc1
+FROM postgres:9.5
 
-MAINTAINER Luke Smith
+MAINTAINER Micke Lisinge
 
 RUN apt-get update && apt-get install -y python-pip python-dev lzop pv daemontools
 RUN pip install wal-e
