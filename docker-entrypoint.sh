@@ -1,7 +1,32 @@
 #!/bin/bash
 set -e
 
-/etc/init.d/cron start
+# Set up wal-e
+if [ "$AWS_ACCESS_KEY_ID" = "" ]
+then
+    echo "AWS_ACCESS_KEY_ID does not exist"
+else
+    if [ "$AWS_SECRET_ACCESS_KEY" = "" ]
+    then
+        echo "AWS_SECRET_ACCESS_KEY does not exist"
+    else
+        if [ "$WALE_S3_PREFIX" = "" ]
+        then
+            echo "WALE_S3_PREFIX does not exist"
+        else
+          mkdir -p /etc/wal-e.d/env
+
+          echo "$AWS_SECRET_ACCESS_KEY" > /etc/wal-e.d/env/AWS_SECRET_ACCESS_KEY
+          echo "$AWS_ACCESS_KEY_ID" > /etc/wal-e.d/env/AWS_ACCESS_KEY_ID
+          echo "$WALE_S3_PREFIX" > /etc/wal-e.d/env/WALE_S3_PREFIX
+          chown -R root:postgres /etc/wal-e.d
+          /etc/init.d/cron start
+          su - postgres -c "crontab -l | { cat; echo \"0 3 * * * /usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-push $PGDATA\"; } | crontab -"
+          su - postgres -c "crontab -l | { cat; echo \"0 4 * * * /usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e delete --confirm retain 7\"; } | crontab -"
+        fi
+    fi
+fi
+# End
 
 if [ "${1:0:1}" = '-' ]; then
 	set -- postgres "$@"
