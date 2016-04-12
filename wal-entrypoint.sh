@@ -21,7 +21,7 @@ else
           echo "$WALE_S3_PREFIX" > /etc/wal-e.d/env/WALE_S3_PREFIX
           chown -R postgres /etc/wal-e.d
           su - postgres -c "crontab -l | { cat; echo \"0 3 * * * /usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-push $PGDATA\"; } | crontab -"
-          su - postgres -c "crontab -l | { cat; echo \"0 4 * * * /usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e delete --confirm retain 7\"; } | crontab -"
+          su - postgres -c "crontab -l | { cat; echo \"0 4 * * * /usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e delete --confirm retain ${WALE_RETAIN:-7}\"; } | crontab -"
         fi
     fi
 fi
