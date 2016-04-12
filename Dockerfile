@@ -27,7 +27,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ADD fix-acl.sh /docker-entrypoint-initdb.d/
 ADD setup-wale.sh /docker-entrypoint-initdb.d/
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY wal-entrypoint.sh /wal-entrypoint.sh
 
+ENTRYPOINT []
 CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
