@@ -18,6 +18,10 @@ RUN apt-get install -y python-pip python-dev lzop pv daemontools
 RUN pip install --upgrade --force pip
 RUN pip install wal-e
 
+# Install supervisord
+RUN apt-get install -y supervisor
+ADD supervisord.conf /supervisord.conf
+
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD fix-acl.sh /docker-entrypoint-initdb.d/
@@ -25,3 +29,5 @@ ADD setup-wale.sh /docker-entrypoint-initdb.d/
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
