@@ -16,6 +16,8 @@ Environment variables to pass to the container for WAL-E, all of these must be p
 
 `AWS_SECRET_ACCESS_KEY`
 
+`AWS_REGION`
+
 `WALE_S3_PREFIX=\"s3://<bucketname>/<path>\"`
 
 `WALE_RETAIN=7`
