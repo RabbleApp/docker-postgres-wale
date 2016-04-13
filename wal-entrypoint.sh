@@ -18,6 +18,7 @@ else
 
           echo "$AWS_SECRET_ACCESS_KEY" > /etc/wal-e.d/env/AWS_SECRET_ACCESS_KEY
           echo "$AWS_ACCESS_KEY_ID" > /etc/wal-e.d/env/AWS_ACCESS_KEY_ID
+          echo "$AWS_REGION" > /etc/wal-e.d/env/AWS_REGION
           echo "$WALE_S3_PREFIX" > /etc/wal-e.d/env/WALE_S3_PREFIX
           chown -R postgres /etc/wal-e.d
           su - postgres -c "crontab -l | { cat; echo \"0 3 * * * /usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-push $PGDATA\"; } | crontab -"
