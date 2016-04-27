@@ -1,4 +1,4 @@
-FROM postgres:9.5
+FROM postgres:9.5.2
 
 MAINTAINER Micke Lisinge
 
